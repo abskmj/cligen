@@ -1,0 +1,28 @@
+{
+    "baseUrl": "https://exchangeratesapi.io/api",
+    "operations": {
+        "rates": {
+            "uri": "/{date}",
+            "data": {
+                "path": {
+                    "parameters": [
+                        {
+                            "name": "date",
+                            "default": "latest"
+                        }
+                    ]
+                },
+                "query": {
+                    "parameters": [
+                        {
+                            "name": "base"
+                        },
+                        {
+                            "name": "symbols"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
