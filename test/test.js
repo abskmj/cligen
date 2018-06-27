@@ -1,11 +1,11 @@
 let expect = require("chai").expect;
-let Client = require('../lib/client');
+let Cligen = require('../index');
 
 
 describe("Client", function () {
 
     it('should have a property corresponding to the operation', function () {
-        let client = new Client({
+        let client = Cligen.getClient({
             "baseUrl": "https://test.com",
             "operations": {
                 "rates": {},
@@ -19,7 +19,7 @@ describe("Client", function () {
 
 describe("Operation", function () {
 
-    let client = new Client({
+    let client = Cligen.getClient({
         "baseUrl": "http://test.com",
         "operations": {
             "rates": {
@@ -32,7 +32,7 @@ describe("Operation", function () {
         }
     }, { mock: true });
 
-    let exchange = new Client(require('./exchangeratesapi.io.json'), { mock: true });
+    let exchange = Cligen.getClient(require('./exchangeratesapi.io.json'), { mock: true });
 
     it('should set request url', function () {
 
