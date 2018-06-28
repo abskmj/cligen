@@ -1,88 +1,77 @@
 let expect = require("chai").expect;
 let Cligen = require('../index');
+let client = Cligen.getClient(require('./specs.json'), { mock: true });
 
 
 describe("Client", function () {
 
     it('should have a property corresponding to the operation', function () {
-        let client = Cligen.getClient({
-            "baseUrl": "https://test.com",
-            "operations": {
-                "rates": {},
-                "deals": {}
-            }
-        });
-        expect(client).to.have.property('rates');
-        expect(client).to.have.property('deals');
+        expect(client).to.have.property('fetch');
+        //expect(client).to.have.property('deals');
     });
 });
 
 describe("Operation", function () {
 
-    let client = Cligen.getClient({
-        "baseUrl": "http://test.com",
-        "operations": {
-            "rates": {
-                "uri": "/rates"
-            },
-            "deals": {
-                "uri": "/deals/{id}",
-                "method": "post",
-            }
-        }
-    }, { mock: true });
-
-    let exchange = Cligen.getClient(require('./exchangeratesapi.io.json'), { mock: true });
-
     it('should set request url', function () {
 
-        return client.rates()
+        return client.fetch()
             .then(response => {
-                expect(response.request.url).to.equal('http://test.com/rates');
+                expect(response.request.url).to.equal('http://dummy.server.com/test/fetch');
             });
     });
 
-    it('should set request method as "get" when not provided', function () {
+    it('should set request method as "get" when not provided', () => {
 
-        return exchange.rates()
+        return client.fetch()
             .then(response => {
                 expect(response.request.method).to.equal('GET');
             });
     });
 
-    it('should set request method', function () {
+    it('should set request method', () => {
 
-        return client.deals()
+        return client.add()
             .then(response => {
                 expect(response.request.method).to.equal('POST');
             });
     });
 
+    it('should translate header parameter', () => {
+
+        return client.add({
+            "X-Request-Id": "req89877"
+        }).then(response => {
+            expect(response.request.headers).to.have.property('X-Request-Id');
+            expect(response.request.headers["X-Request-Id"]).to.equal('req89877');
+        });
+    });
+
     it('should translate path parameter', () => {
 
-        return exchange.rates({
-            date: "2018-01-01"
+        return client.add({
+            id: "101"
         }).then(response => {
-            expect(response.request.url).to.equal('https://exchangeratesapi.io/api/2018-01-01');
+            expect(response.request.url).to.equal('http://dummy.server.com/test/101');
         });
     });
 
     it('should translate query parameter', () => {
 
-        return exchange.rates({
-            base: "USD",
-            symbols: "EUR"
+        return client.add({
+            count: "12",
+            include: "all"
         }).then(response => {
             let parts = response.request.url.split('?');
 
             if (parts && parts[1]) {
                 let parameters = require('query-string').parse(parts[1]);
 
-                expect(parameters).to.have.property('base');
-                expect(parameters.base).to.equal('USD');
+                expect(parameters).to.have.property('count');
+                expect(parameters.base).to.equal('12');
 
-                expect(parameters).to.have.property('symbols');
-                expect(parameters.symbols).to.equal('EUR');
+                expect(parameters).to.have.property('include');
+                expect(parameters.symbols).to.equal('all');
             }
 
 
@@ -91,8 +80,8 @@ describe("Operation", function () {
 
     it('should translate parameter with default value', () => {
 
-        return exchange.rates().then(response => {
-            expect(response.request.url).to.equal('https://exchangeratesapi.io/api/latest');
+        return client.add().then(response => {
+            expect(response.request.url).to.equal('http://dummy.server.com/test/101');
         });
     });
 

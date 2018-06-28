@@ -1,0 +1,41 @@
+{
+    "baseUrl": "http://dummy.server.com/test",
+    "operations": {
+        "fetch": {
+            "uri": "/fetch",
+            "data": {
+                "query": {
+                    "parameters": [
+                        {
+                            "name": "count"
+                        },
+                        {
+                            "name": "include"
+                        }
+                    ]
+                }
+            }
+        },
+        "add": {
+            "uri": "/{id}",
+            "method": "post",
+            "data": {
+                "header": {
+                    "parameters": [
+                        {
+                            "name": "X-Request-Id"
+                        }
+                    ]
+                },
+                "path": {
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "default": "101"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
