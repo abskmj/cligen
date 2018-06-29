@@ -26,5 +26,9 @@
     "poc"
   ],
   "author": "abskmj@gmail.com",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abskmj/cligen.git"
+  }
 }
