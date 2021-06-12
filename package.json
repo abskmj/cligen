@@ -12,11 +12,13 @@
     "browserify": "^17.0.0",
     "chai": "^4.1.2",
     "mocha": "^8.4.0",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "standard": "^16.0.3"
   },
   "scripts": {
     "test": "nyc --reporter=lcov --reporter=text mocha test/test.js",
-    "build": "browserify index.js --standalone Cligen -o cligen.js"
+    "build": "browserify index.js --standalone Cligen -o cligen.js",
+    "lint": "standard --fix"
   },
   "keywords": [
     "api",
@@ -28,5 +30,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/abskmj/cligen.git"
+  },
+  "standard": {
+    "env": [ "mocha" ]
   }
 }
